@@ -28,6 +28,7 @@ class Figure:
     def move(self, pos_x, pos_y):
         self.__pos_y = pos_y
         self.__pos_x = pos_x
+        return True
 
     def get_position(self):
         return [self.__pos_x, self.__pos_y]
@@ -47,12 +48,12 @@ class Pawn(Figure):
     def move(self, new_pos_x, new_pos_y):
         team = self.get_team()
         pos_x, pos_y = self.get_position()
-        if team == 'white' and \
+        if team == 'black' and \
                 pos_x == new_pos_x and pos_y + 1 == new_pos_y:
-            super().move(new_pos_x, new_pos_y)
-        elif team == 'black' and \
+            return super().move(new_pos_x, new_pos_y)
+        elif team == 'white' and \
                 pos_x == new_pos_x and pos_y - 1 == new_pos_y:
-            super().move(new_pos_x, new_pos_y)
+            return super().move(new_pos_x, new_pos_y)
         else:
             raise InvalidMoveError('Invalid move for Pawn')
 
@@ -72,7 +73,7 @@ class Knight(Figure):
         # Проверка на "букву Г"
         if (abs(new_pos_x - pos_x) == 2 and abs(new_pos_y - pos_y) == 1) or \
                 (abs(new_pos_x - pos_x) == 1 and abs(new_pos_y - pos_y) == 2):
-            super().move(new_pos_x, new_pos_y)
+            return super().move(new_pos_x, new_pos_y)
         else:
             raise InvalidMoveError("Invalid move for Knight.")
 
@@ -90,7 +91,7 @@ class Bishop(Figure):
         pos_x, pos_y = self.get_position()
         # Слон двигается по диагоналям, то есть разница по обеим осям должна быть одинаковой
         if abs(new_pos_x - pos_x) == abs(new_pos_y - pos_y):
-            super().move(new_pos_x, new_pos_y)
+            return super().move(new_pos_x, new_pos_y)
         else:
             raise InvalidMoveError("Invalid move for Bishop.")
 
@@ -107,7 +108,7 @@ class Rook(Figure):
         pos_x, pos_y = self.get_position()
         # Ладья двигается по прямым линиям: либо по вертикали, либо по горизонтали
         if pos_x == new_pos_x or pos_y == new_pos_y:
-            super().move(new_pos_x, new_pos_y)
+            return super().move(new_pos_x, new_pos_y)
         else:
             raise InvalidMoveError("Invalid move for Rook.")
 
@@ -125,7 +126,7 @@ class Queen(Figure):
         # Ферзь может двигаться как слон и как ладья
         if abs(new_pos_x - pos_x) == abs(new_pos_y - pos_y) or \
                 pos_x == new_pos_x or pos_y == new_pos_y:
-            super().move(new_pos_x, new_pos_y)
+            return super().move(new_pos_x, new_pos_y)
         else:
             raise InvalidMoveError("Invalid move for Queen.")
 
@@ -142,6 +143,6 @@ class King(Figure):
         pos_x, pos_y = self.get_position()
         # Король может двигаться на одно поле в любом направлении
         if abs(new_pos_x - pos_x) <= 1 and abs(new_pos_y - pos_y) <= 1:
-            super().move(new_pos_x, new_pos_y)
+            return super().move(new_pos_x, new_pos_y)
         else:
             raise InvalidMoveError("Invalid move for King.")

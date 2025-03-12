@@ -1,34 +1,78 @@
+from modules.errors import EmptyFieldError
 from modules.figures import *
 class Game:
     def __init__(self):
-        self.board = self.create_board()
+        self.__board = self.create_board()
 
     def create_board(self):
-        board = [[None] * 8 for _ in range(8)]  # 8x8 доска
+        # Создаем пустую доску 8x8
+        board = [[None] * 8 for _ in range(8)]
 
-        # Размещение фигур на доске
-        board[0] = [
-            Rook(1, 1, 'black'), Knight(2, 1, 'black'), Bishop(3, 1, 'black'), Queen(4, 1, 'black'),
-            King(5, 1, 'black'), Bishop(6, 1, 'black'), Knight(7, 1, 'black'), Rook(8, 1, 'black')
-        ]
-        board[1] = [Pawn(x + 1, 2, 'black') for x in range(8)]  # Черные пешки
-        board[6] = [Pawn(x + 1, 7, 'white') for x in range(8)]  # Белые пешки
-        board[7] = [
-            Rook(1, 8, 'white'), Knight(2, 8, 'white'), Bishop(3, 8, 'white'), Queen(4, 8, 'white'),
-            King(5, 8, 'white'), Bishop(6, 8, 'white'), Knight(7, 8, 'white'), Rook(8, 8, 'white')
-        ]
+        # Размещаем черные фигуры (индексация в массиве начинается с 0)
+        board[0][0] = Rook(0, 0, 'black')
+        board[0][1] = Knight(1, 0, 'black')
+        board[0][2] = Bishop(2, 0, 'black')
+        board[0][3] = Queen(3, 0, 'black')
+        board[0][4] = King(4, 0, 'black')
+        board[0][5] = Bishop(5, 0, 'black')
+        board[0][6] = Knight(6, 0, 'black')
+        board[0][7] = Rook(7, 0, 'black')
+
+        # Размещаем черные пешки
+        for col in range(8):
+            board[1][col] = Pawn(col, 1, 'black')
+
+        # Размещаем белые пешки
+        for col in range(8):
+            board[6][col] = Pawn(col, 6, 'white')
+
+        # Размещаем белые фигуры
+        board[7][0] = Rook(0, 7, 'white')
+        board[7][1] = Knight(1, 7, 'white')
+        board[7][2] = Bishop(2, 7, 'white')
+        board[7][3] = Queen(3, 7, 'white')
+        board[7][4] = King(4, 7, 'white')
+        board[7][5] = Bishop(5, 7, 'white')
+        board[7][6] = Knight(6, 7, 'white')
+        board[7][7] = Rook(7, 7, 'white')
+
         return board
 
     def print_board(self):
+        """
+        Отображает текущее состояние доски.
+        """
+        print("   0 1 2 3 4 5 6 7")
+        print("  ________________")
         for row in range(8):
-            line = f"{row}|"
+            line = f"{row} |"
             for col in range(8):
-                piece = self.board[row][col]
+                piece = self.__board[row][col]
                 if piece:
                     line += f"{str(piece)}|"
                 else:
                     line += " |"
             print(line)
-            print("-" * 18)
-        print(" |0|1|2|3|4|5|6|7|")
+        print("  ----------------")
+        print("   0 1 2 3 4 5 6 7")
+
+    def make_move(self, pos_x, pos_y, new_pos_x, new_pos_y, team = 'test'):
+        board = self.__board
+        piece = board[pos_y][pos_x]
+        #Для отладки
+        print(piece)
+        print(piece.get_position())
+        print([new_pos_x, new_pos_y])
+        print(piece.get_team())
+        #_____________________
+        if piece:
+            if piece.move(new_pos_x, new_pos_y):
+                board[new_pos_y][new_pos_x] = piece
+                board[pos_y][pos_x] = None
+            else: raise InvalidMoveError
+        else: raise EmptyFieldError
+
+
+
+
 
