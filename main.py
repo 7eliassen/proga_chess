@@ -26,5 +26,6 @@ try:
 except InvalidMoveError: print("Неверный ход")
 
 try:
-    game.make_move(0, 1, 0, 9)
-except InvalidMoveError: print("Вышел за граница")
+    # Пример неверного хода (ладья пытается улететь за границу)
+    game.make_move(7, 7, 8, 7)
+except OutOfBoundsError: print("Вышел за граница")

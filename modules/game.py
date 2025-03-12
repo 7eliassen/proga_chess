@@ -1,4 +1,4 @@
-from modules.errors import EmptyFieldError
+from modules.errors import EmptyFieldError, OutOfBoundsError
 from modules.figures import *
 class Game:
     def __init__(self):
