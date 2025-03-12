@@ -60,10 +60,12 @@ class Game:
         board = self.__board
         piece = board[pos_y][pos_x]
         #Для отладки
+        print('________')
         print(piece)
         print(piece.get_position())
         print([new_pos_x, new_pos_y])
         print(piece.get_team())
+        print('________')
         #_____________________
         if piece:
             if piece.move(new_pos_x, new_pos_y):

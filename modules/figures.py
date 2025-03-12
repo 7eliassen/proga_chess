@@ -65,7 +65,7 @@ class Knight(Figure):
         super().__init__(pos_x, pos_y, team)
 
     def __str__(self):
-        return "Л"
+        return "H"
 
     @check_bounds
     def move(self, new_pos_x, new_pos_y):
