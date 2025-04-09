@@ -59,22 +59,9 @@ class Game:
     def make_move(self, pos_x, pos_y, new_pos_x, new_pos_y, team = 'test'):
         board = self.__board
         piece = board[pos_y][pos_x]
-        #Для отладки
-        print('________')
-        print(piece)
-        print(piece.get_position())
-        print([new_pos_x, new_pos_y])
-        print(piece.get_team())
-        print('________')
-        #_____________________
         if piece:
             if piece.move(new_pos_x, new_pos_y):
                 board[new_pos_y][new_pos_x] = piece
                 board[pos_y][pos_x] = None
             else: raise InvalidMoveError
         else: raise EmptyFieldError
-
-
-
-
-

@@ -1,6 +1,7 @@
 """В этом файле содержатся классы шахматных фигур"""
 from modules.errors import InvalidMoveError
 from modules.logic import check_bounds
+from abc import ABC, abstractmethod
 
 """
 Pawn – Пешка
@@ -12,7 +13,33 @@ King – Король
 """
 
 
-class Figure:
+# Класс-миксин для логирования
+class LoggerMixin:
+    def log_move(self, from_pos, to_pos, team):
+        print(f"[LOG] {self.__class__.__name__} from {team} moved from {from_pos} to {to_pos}")
+
+
+# Абстрактный метод для фигуры(я не знаю зачем оно здесь)
+class ABSFigure(ABC):
+    @abstractmethod
+    def move(self):
+        ...
+
+    @abstractmethod
+    def get_position(self):
+        ...
+
+    @abstractmethod
+    def set_position(self):
+        ...
+
+    @abstractmethod
+    def get_team(self):
+        ...
+
+
+# Родительский класс фигуры
+class Figure(ABSFigure, LoggerMixin):
     def __init__(self, pos_x, pos_y, team):
         self.__pos_x = pos_x
         self.__pos_y = pos_y
@@ -21,17 +48,26 @@ class Figure:
     def __str__(self):
         return "T"
 
-
     def get_team(self):
         return self.__team
 
+    @check_bounds
     def move(self, pos_x, pos_y):
+        old_x, old_y = self.get_position()
         self.__pos_y = pos_y
         self.__pos_x = pos_x
+        self.log_move(f"X:{old_x} Y:{old_y}", f"X:{pos_x} Y:{pos_y}", self.get_team())
         return True
 
     def get_position(self):
         return [self.__pos_x, self.__pos_y]
+
+    # Метод для отладки, никаких проверок
+    def set_position(self, pos_x, pos_y):
+        old_x, old_y = self.get_position()
+        self.__pos_x = pos_x
+        self.__pos_y = pos_y
+        self.log_move(f"X:{old_x} Y:{old_y}", f"X:{pos_x} Y:{pos_y}", self.get_team())
 
 
 class Pawn(Figure):
@@ -44,7 +80,6 @@ class Pawn(Figure):
     def __str__(self):
         return "P"
 
-    @check_bounds
     def move(self, new_pos_x, new_pos_y):
         team = self.get_team()
         pos_x, pos_y = self.get_position()
@@ -67,7 +102,6 @@ class Knight(Figure):
     def __str__(self):
         return "H"
 
-    @check_bounds
     def move(self, new_pos_x, new_pos_y):
         pos_x, pos_y = self.get_position()
         # Проверка на "букву Г"
@@ -85,8 +119,6 @@ class Bishop(Figure):
     def __str__(self):
         return "B"
 
-
-    @check_bounds
     def move(self, new_pos_x, new_pos_y):
         pos_x, pos_y = self.get_position()
         # Слон двигается по диагоналям, то есть разница по обеим осям должна быть одинаковой
@@ -103,7 +135,6 @@ class Rook(Figure):
     def __str__(self):
         return "R"
 
-    @check_bounds
     def move(self, new_pos_x, new_pos_y):
         pos_x, pos_y = self.get_position()
         # Ладья двигается по прямым линиям: либо по вертикали, либо по горизонтали
@@ -120,7 +151,6 @@ class Queen(Figure):
     def __str__(self):
         return "Q"
 
-    @check_bounds
     def move(self, new_pos_x, new_pos_y):
         pos_x, pos_y = self.get_position()
         # Ферзь может двигаться как слон и как ладья
@@ -138,7 +168,6 @@ class King(Figure):
     def __str__(self):
         return "K"
 
-    @check_bounds
     def move(self, new_pos_x, new_pos_y):
         pos_x, pos_y = self.get_position()
         # Король может двигаться на одно поле в любом направлении
