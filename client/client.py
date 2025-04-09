@@ -1,6 +1,7 @@
 '''Тут будет находиться клиентская часть приложения'''
 import socket
 import json
+#TODO: Обработка ошибок от сервера
 
 
 def connection_to_server(address: str, port: int) -> socket.socket:
@@ -20,7 +21,12 @@ def create_room(client, name='TEST_NAME') -> int:
     client.send(message)
     r_message = client.recv(1024).decode()
     json_data = json.loads(r_message)
-    print(json_data['room_id'])
+    print(f"Создана комната, id: {json_data['room_id']}")
+
+    #FIXME: Времмено
+    r_message = client.recv(1024).decode()
+    print(r_message)
+
 
 
 
@@ -32,6 +38,14 @@ def connect_to_room(client, room, name='TEST_NAME'):
     json_str = json.dumps(data)
     message = json_str.encode()
     client.send(message)
+    r_message = client.recv(1024).decode()
+    # TODO: Результат запроса нужно обрабатывать
+    # json_data = json.loads(r_message)
+    #FIXME: временная проверка
+    print(r_message)
+    if r_message == 'OK':
+        print(f"Вы успешно подключились к комнате {room}")
+    else: print('Ошибка')
 
 
 if __name__ == '__main__':

@@ -1,8 +1,18 @@
 from modules.errors import EmptyFieldError, OutOfBoundsError
 from modules.figures import *
+
+
 class Game:
     def __init__(self):
         self.__board = self.create_board()
+        self.__status = 'wait'
+
+    def get_status(self):
+        return self.__status
+
+    def set_status(self, status):
+        if status in ['wait', 'in_process', 'finished']:
+            self.__status = status
 
     def create_board(self):
         # Создаем пустую доску 8x8
@@ -56,12 +66,14 @@ class Game:
         print("  ----------------")
         print("   0 1 2 3 4 5 6 7")
 
-    def make_move(self, pos_x, pos_y, new_pos_x, new_pos_y, team = 'test'):
+    def make_move(self, pos_x, pos_y, new_pos_x, new_pos_y, team='test'):
         board = self.__board
         piece = board[pos_y][pos_x]
         if piece:
             if piece.move(new_pos_x, new_pos_y):
                 board[new_pos_y][new_pos_x] = piece
                 board[pos_y][pos_x] = None
-            else: raise InvalidMoveError
-        else: raise EmptyFieldError
+            else:
+                raise InvalidMoveError
+        else:
+            raise EmptyFieldError
