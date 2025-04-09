@@ -1,8 +1,8 @@
 '''Тут будет находиться клиентская часть приложения'''
 import socket
 import json
-#TODO: Обработка ошибок от сервера
-
+# TODO: Обработка ошибок от сервера
+# TODO: добавить везде обработки ошибок
 
 def connection_to_server(address: str, port: int) -> socket.socket:
     s = socket.socket()
