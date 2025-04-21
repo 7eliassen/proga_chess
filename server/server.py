@@ -10,6 +10,8 @@ import logging
 import uuid
 from modules.user import User
 import time
+import signal
+import sys
 
 logging.basicConfig(
     level=logging.DEBUG,  # INFO или DEBUG для подробностей
@@ -21,17 +23,39 @@ logging.basicConfig(
 # uuid: socket-connection
 users = {}
 
-#FIXME: временно
+# FIXME: временно
 # room_id(int): [game, who_wait]
 games = {}
 
-def send_json(conn, data:dict):
+server_socket = None
+client_threads = []  # Список для хранения потоков с клиентами
+
+
+def handle_exit(signum, frame):
+    """Обработчик сигнала для корректного завершения работы."""
+    #FIXME: ПОКА ЧТО НЕ РАБОТАЕТ
+    global server_socket
+    print("\nПолучен сигнал для завершения работы сервера...")
+
+    # Закрытие всех соединений с клиентами
+    for thread in client_threads:
+        thread.join()  # Ожидаем завершения всех потоков с клиентами
+
+    # Закрытие сокета сервера
+    if server_socket:
+        server_socket.close()
+
+    print("Сервер завершил свою работу.")
+    sys.exit(0)
+
+
+def send_json(conn, data: dict):
     json_data = json.dumps(data) + "\n"
     message = json_data.encode()
     conn.send(message)
 
 
-def init_game(user1:User, user2:User, game:game.Game):
+def init_game(user1: User, user2: User, game: game.Game):
     conn1, conn2 = user1.conn, user2.conn
 
     # FIXME: УЖАС. ПОЧИНИТЬ ЭТО КАК МОЖНО РАНЬШЕ
@@ -57,6 +81,7 @@ def init_game(user1:User, user2:User, game:game.Game):
             'room_id': game.id}
     send_json(conn, data)
 
+
 def make_move(json_data):
     room_id = json_data.get('room_id')
     game = games[room_id][0]
@@ -74,11 +99,12 @@ def make_move(json_data):
         }
         send_json(conn, data)
 
-def create_room(user:User):
+
+def create_room(user: User):
     """Здесь будет создание комнаты"""
     conn = user.conn
     new_game = game.Game()
-    #TODO: модифицировать проверку на коллизии
+    # TODO: модифицировать проверку на коллизии
     room_id = random.randint(1000, 9999)
     while room_id in games.keys():
         room_id = random.randint(1000, 9999)
@@ -93,11 +119,12 @@ def create_room(user:User):
     message = json_data.encode()
     conn.send(message)
 
-def join_room(user:User, room_id:str):
-    #FIXME: Создать настоящее присоединение к комнате
+
+def join_room(user: User, room_id: str):
+    # FIXME: Создать настоящее присоединение к комнате
     conn = user.conn
     logging.debug(f"Пользователь {user} пытается подключиться к {room_id}")
-    aviable_games =list(games.keys())
+    aviable_games = list(games.keys())
     logging.debug(f"Список текущих игр: {aviable_games}")
     room_id = int(room_id)
     int_room_id = int(room_id)
@@ -112,8 +139,8 @@ def join_room(user:User, room_id:str):
         send_json(conn, data)
 
         data2 = {'type': 'join',
-                'code': 'opponent_is_found',
-                'room_id': room_id}
+                 'code': 'opponent_is_found',
+                 'room_id': room_id}
 
         game.player2 = user
         game.set_status('both_connected')
@@ -131,8 +158,8 @@ def join_room(user:User, room_id:str):
         send_json(conn, data)
 
 
-#TODO: Сервер может возвращать ошибки
-def handle_client(user_id:str):
+# TODO: Сервер может возвращать ошибки
+def handle_client(user_id: str):
     """Отдельный поток для каждого клиента"""
     user = users[user_id]
     conn = user.conn
@@ -154,8 +181,8 @@ def handle_client(user_id:str):
             join_room(user, room)
         elif type == 'move':
             make_move(json_data)
-        #TODO: move, end, close?, start?
-    #TODO: Связать отключение клиента с закрытием комнаты
+        # TODO: end, close?, start?
+    # TODO: Связать отключение клиента с закрытием комнаты
     conn.close()
     logging.info(f"Отключился {addr}")
 
@@ -170,10 +197,15 @@ def start_server(address: str, port: int) -> socket.socket:
 
 if __name__ == "__main__":
     server = start_server('localhost', 12345)
+    server_socket = server_socket
+    signal.signal(signal.SIGINT, handle_exit)
+    signal.signal(signal.SIGTERM, handle_exit)
     while True:
         conn, addr = server.accept()
         user_id = str(uuid.uuid4())
         users[user_id] = User(user_id=user_id, conn=conn, addr=addr)
         logging.debug(f'USERS: {users[user_id]}')
         thread = threading.Thread(target=handle_client, args=[user_id])
+        thread.daemon = True
         thread.start()
+        client_threads.append(thread)

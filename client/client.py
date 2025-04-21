@@ -2,8 +2,10 @@
 import socket
 import json
 import logging
-# TODO: Обработка ошибок от сервера
-# TODO: добавить везде обработки ошибок
+import signal
+import sys
+
+socket_ = None
 
 logging.basicConfig(
     level=logging.DEBUG,  # INFO или DEBUG для подробностей
@@ -12,13 +14,24 @@ logging.basicConfig(
     filemode='w'  # 'a' — добавлять, 'w' — перезаписывать
 )
 
+def close_socket_and_exit(signum, frame):
+    """Обработчик сигнала для закрытия сокета перед выходом."""
+    global client_socket
+    if client_socket:
+        print("\nЗакрытие сокета и выход...")
+        socket_.close()  # Закрываем сокет
+    sys.exit(0)
+signal.signal(signal.SIGINT, close_socket_and_exit)
+
 def connection_to_server(address: str, port: int) -> socket.socket:
     s = socket.socket()
     s.connect((address, port))
     return s
 
+
 def init_game():
     """После создания/подключения к комнате инициализируется игра"""
+
 
 def create_room(client, name='TEST_NAME') -> int:
     """Создание комнаты. Сервер возвращает номер комнаты"""
@@ -39,12 +52,8 @@ def create_room(client, name='TEST_NAME') -> int:
     if json_data['type'] == 'join':
         if json_data['code'] == 'opponent_is_found':
             return json_data['room_id']
-        else: return 0
-
-
-
-
-
+        else:
+            return 0
 
 
 def connect_to_room(client, room, name='TEST_NAME'):
@@ -61,10 +70,8 @@ def connect_to_room(client, room, name='TEST_NAME'):
     if json_data['type'] == 'join':
         if json_data['code'] == 'successful':
             return json_data['room_id']
-        else: return 0
-
-
-
+        else:
+            return 0
 
 
 if __name__ == '__main__':

@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1cc4e4c0-acd8-43b1-a07e-086fbfcc51a1" name="Changes" comment="Клиенты могут подключаться">
-      <change afterPath="$PROJECT_DIR$/client/proto_client.py" afterDir="false" />
+    <list default="true" id="1cc4e4c0-acd8-43b1-a07e-086fbfcc51a1" name="Changes" comment="Базовое взаимодействие между клиентами">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/game.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/logic.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/logic.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -73,7 +70,7 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="mail" type="PythonConfigurationType" factoryName="Python">
+    <configuration name="server" type="PythonConfigurationType" factoryName="Python">
       <module name="proga_chess" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -137,13 +134,22 @@
       <option name="project" value="LOCAL" />
       <updated>1745266112164</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Базовое взаимодействие между клиентами">
+      <option name="closed" value="true" />
+      <created>1745272216033</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1745272216033</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="git init" />
     <MESSAGE value="delete test" />
     <MESSAGE value="Клиенты могут подключаться" />
-    <option name="LAST_COMMIT_MESSAGE" value="Клиенты могут подключаться" />
+    <MESSAGE value="Базовое взаимодействие между клиентами" />
+    <option name="LAST_COMMIT_MESSAGE" value="Базовое взаимодействие между клиентами" />
   </component>
 </project>
