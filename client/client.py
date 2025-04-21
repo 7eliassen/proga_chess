@@ -1,8 +1,16 @@
 '''Тут будет находиться клиентская часть приложения'''
 import socket
 import json
+import logging
 # TODO: Обработка ошибок от сервера
 # TODO: добавить везде обработки ошибок
+
+logging.basicConfig(
+    level=logging.DEBUG,  # INFO или DEBUG для подробностей
+    format='%(asctime)s [%(levelname)s] %(message)s',
+    filename=None,  # можно None — тогда в консоль
+    filemode='w'  # 'a' — добавлять, 'w' — перезаписывать
+)
 
 def connection_to_server(address: str, port: int) -> socket.socket:
     s = socket.socket()
@@ -19,13 +27,22 @@ def create_room(client, name='TEST_NAME') -> int:
     json_str = json.dumps(data)
     message = json_str.encode()
     client.send(message)
+
     r_message = client.recv(1024).decode()
     json_data = json.loads(r_message)
-    print(f"Создана комната, id: {json_data['room_id']}")
+    logging.debug(json_data)
+    logging.info("Ожидаем оппонента")
 
-    #FIXME: Времмено
     r_message = client.recv(1024).decode()
-    print(r_message)
+    json_data = json.loads(r_message)
+    logging.debug(json_data)
+    if json_data['type'] == 'join':
+        if json_data['code'] == 'opponent_is_found':
+            return json_data['room_id']
+        else: return 0
+
+
+
 
 
 
@@ -39,13 +56,15 @@ def connect_to_room(client, room, name='TEST_NAME'):
     message = json_str.encode()
     client.send(message)
     r_message = client.recv(1024).decode()
-    # TODO: Результат запроса нужно обрабатывать
-    # json_data = json.loads(r_message)
-    #FIXME: временная проверка
-    print(r_message)
-    if r_message == 'OK':
-        print(f"Вы успешно подключились к комнате {room}")
-    else: print('Ошибка')
+    json_data = json.loads(r_message)
+    logging.debug(json_data)
+    if json_data['type'] == 'join':
+        if json_data['code'] == 'successful':
+            return json_data['room_id']
+        else: return 0
+
+
+
 
 
 if __name__ == '__main__':
