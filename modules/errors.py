@@ -20,3 +20,11 @@ class EmptyFieldError(Exception):
     def __init__(self, message="Пустое поле"):
         self.message = message
         super().__init__(self.message)
+
+
+class SetIdError(Exception):
+    """Неверно назначен id комнаты"""
+
+    def __init__(self, message="Неверно назначен id комнаты"):
+        self.message = message
+        super().__init__(self.message)

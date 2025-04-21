@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1cc4e4c0-acd8-43b1-a07e-086fbfcc51a1" name="Changes" comment="check 2-2">
+    <list default="true" id="1cc4e4c0-acd8-43b1-a07e-086fbfcc51a1" name="Changes" comment="Добавил OutOfBoundsError ошибк">
+      <change afterPath="$PROJECT_DIR$/modules/user.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/errors.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/errors.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/game.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -50,24 +52,27 @@
     "Python.mail.executor": "Run",
     "Python.main.executor": "Run",
     "Python.server.executor": "Run",
+    "Python.user.executor": "Run",
     "Python.ьфшд.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "com.codeium.enabled": "true",
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/eliassen/PycharmProjects/proga_chess/main.py",
+    "last_opened_file_path": "C:/Users/eliassen/PycharmProjects/proga_chess/client",
     "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\eliassen\PycharmProjects\proga_chess\client" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\eliassen\PycharmProjects\proga_chess\modules" />
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="server" type="PythonConfigurationType" factoryName="Python">
+    <configuration name="mail" type="PythonConfigurationType" factoryName="Python">
       <module name="proga_chess" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -94,7 +99,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-fb887030ada0-aa17d162503b-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-243.21565.199" />
+        <option value="bundled-python-sdk-14705d77f0bb-aa17d162503b-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-243.25659.43" />
       </set>
     </attachedChunks>
   </component>
@@ -123,68 +128,12 @@
       <option name="project" value="LOCAL" />
       <updated>1741689680123</updated>
     </task>
-    <task id="LOCAL-00003" summary="micro fixes">
-      <option name="closed" value="true" />
-      <created>1741760970351</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1741760970351</updated>
-    </task>
-    <task id="LOCAL-00004" summary="add server (INIT)">
-      <option name="closed" value="true" />
-      <created>1744191032331</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1744191032331</updated>
-    </task>
-    <task id="LOCAL-00005" summary="чето сделал">
-      <option name="closed" value="true" />
-      <created>1744196362375</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1744196362375</updated>
-    </task>
-    <task id="LOCAL-00006" summary="rename">
-      <option name="closed" value="true" />
-      <created>1744196440762</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1744196440762</updated>
-    </task>
-    <task id="LOCAL-00007" summary="check 2-2">
-      <option name="closed" value="true" />
-      <created>1744199393399</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1744199393399</updated>
-    </task>
-    <option name="localTasksCounter" value="8" />
+    <option name="localTasksCounter" value="3" />
     <servers />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="git init" />
     <MESSAGE value="delete test" />
-    <MESSAGE value="micro fixes" />
-    <MESSAGE value="add server (INIT)" />
-    <MESSAGE value="чето сделал" />
-    <MESSAGE value="rename" />
-    <MESSAGE value="check 2-2" />
-    <option name="LAST_COMMIT_MESSAGE" value="check 2-2" />
+    <option name="LAST_COMMIT_MESSAGE" value="delete test" />
   </component>
 </project>

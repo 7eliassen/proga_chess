@@ -1,4 +1,4 @@
-from modules.errors import EmptyFieldError, OutOfBoundsError
+from modules.errors import EmptyFieldError, OutOfBoundsError, SetIdError
 from modules.figures import *
 
 
@@ -6,12 +6,32 @@ class Game:
     def __init__(self):
         self.__board = self.create_board()
         self.__status = 'wait'
+        self.__id = None
+        self.player1 = None
+        self.player2 = None
+
+    def __str__(self):
+        return f'Game({self.__id}) is {self.get_status()}'
+
+    def set_player(self, number, user):
+        if number == 1:
+            self.player1 = user
+        elif number == 2:
+            self.player2 = user
+
+    def get_id(self):
+        return self.__id
+
+    def set_id(self, id):
+        if 1000 <= id <= 9999:
+            self.__id = id
+        else: raise SetIdError
 
     def get_status(self):
         return self.__status
 
     def set_status(self, status):
-        if status in ['wait', 'in_process', 'finished']:
+        if status in ['wait', 'both_connected', 'in_process', 'finished']:
             self.__status = status
 
     def create_board(self):
