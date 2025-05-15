@@ -12,6 +12,8 @@ from modules.user import User
 import time
 import signal
 import sys
+import os
+
 
 logging.basicConfig(
     level=logging.DEBUG,  # INFO или DEBUG для подробностей

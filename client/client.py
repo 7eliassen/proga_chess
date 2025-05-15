@@ -2,8 +2,7 @@
 import socket
 import json
 import logging
-import signal
-import sys
+
 
 socket_ = None
 
@@ -14,27 +13,16 @@ logging.basicConfig(
     filemode='w'  # 'a' — добавлять, 'w' — перезаписывать
 )
 
-def close_socket_and_exit(signum, frame):
-    """Обработчик сигнала для закрытия сокета перед выходом."""
-    global client_socket
-    if client_socket:
-        print("\nЗакрытие сокета и выход...")
-        socket_.close()  # Закрываем сокет
-    sys.exit(0)
-signal.signal(signal.SIGINT, close_socket_and_exit)
+
 
 def connection_to_server(address: str, port: int) -> socket.socket:
     s = socket.socket()
     s.connect((address, port))
     return s
 
-
-def init_game():
-    """После создания/подключения к комнате инициализируется игра"""
-
-
-def create_room(client, name='TEST_NAME') -> int:
+def create_room(socket_client, name='TEST_NAME') -> int:
     """Создание комнаты. Сервер возвращает номер комнаты"""
+    client = socket_client.sock
     data = {'type': 'create',
             'name': name}
     json_str = json.dumps(data)
@@ -56,8 +44,9 @@ def create_room(client, name='TEST_NAME') -> int:
             return 0
 
 
-def connect_to_room(client, room, name='TEST_NAME'):
+def connect_to_room(socket_client, room, name='TEST_NAME'):
     """Подключение к комнате. Отправка данных в JSON"""
+    client = socket_client.sock
     data = {'type': 'join',
             'name': name,
             'room': room}

@@ -4,11 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1cc4e4c0-acd8-43b1-a07e-086fbfcc51a1" name="Changes" comment="Пешки могут есть по диагонали, изменена локига проверки границ">
+    <list default="true" id="1cc4e4c0-acd8-43b1-a07e-086fbfcc51a1" name="Changes" comment="Добавил label хода. добавлены методы is_can_attack">
+      <change afterPath="$PROJECT_DIR$/chess.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/modules/socketclient.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/GUI/chess_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/GUI/chess_gui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/chess.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/client.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/figures.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/game.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +44,9 @@
 }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/modules/game.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -74,6 +82,7 @@
       <recent name="C:\Users\eliassen\PycharmProjects\proga_chess\client" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\eliassen\PycharmProjects\proga_chess" />
       <recent name="C:\Users\eliassen\PycharmProjects\proga_chess\client" />
       <recent name="C:\Users\eliassen\PycharmProjects\proga_chess\client\GUI\figures" />
       <recent name="C:\Users\eliassen\PycharmProjects\proga_chess\modules" />
@@ -94,7 +103,7 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/client/chess.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\eliassen\PycharmProjects\proga_chess\chess.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -161,7 +170,7 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/server/server.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\eliassen\PycharmProjects\proga_chess\server.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -263,7 +272,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747312075465</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Добавил label хода. добавлены методы is_can_attack">
+      <option name="closed" value="true" />
+      <created>1747318923175</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1747318923175</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -275,6 +292,7 @@
     <MESSAGE value="Добавил GUI. Можно перемещать фигуры по доске. MVP" />
     <MESSAGE value="Добавил degug mode" />
     <MESSAGE value="Пешки могут есть по диагонали, изменена локига проверки границ" />
-    <option name="LAST_COMMIT_MESSAGE" value="Пешки могут есть по диагонали, изменена локига проверки границ" />
+    <MESSAGE value="Добавил label хода. добавлены методы is_can_attack" />
+    <option name="LAST_COMMIT_MESSAGE" value="Добавил label хода. добавлены методы is_can_attack" />
   </component>
 </project>

@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
-
+from modules.socketclient import SocketClient
+import client.client as cl
 from PIL import Image, ImageTk
 import os
 
@@ -8,9 +9,10 @@ IS_DEBUG = False
 
 
 class ChessGUI:
-    def __init__(self, figures_path, game):
+    def __init__(self, figures_path):
         self.root = tk.Tk()
-        self.game = game
+        self.game = None
+        self.socket = SocketClient(self)
         self.root.title("Шахматы с фигурами")
         self.cell_size = 80
         self.canvas = tk.Canvas(self.root, width=8 * self.cell_size, height=8 * self.cell_size)
@@ -20,12 +22,34 @@ class ChessGUI:
         self.root.geometry(f"{self.win_width}x{self.win_height}")
         self.figures_path = figures_path
         self.pieces = {}  # Сюда загрузим изображения
-        self.canvas.bind("<Button-1>", self.on_click)
+        # self.canvas.bind("<Button-1>", self.on_click)
+        menubar = tk.Menu(self.root)
+        game_menu = tk.Menu(menubar, tearoff=0)
+        game_menu.add_command(label="Создать", command=self.new_game)
+        game_menu.add_separator()
+        game_menu.add_command(label="Подключиться", command=self.join_game)
+
+        # Добавляем подменю в главное меню
+        menubar.add_cascade(label="Игра", menu=game_menu)
+
+        # Устанавливаем главное меню в окно
+        self.root.config(menu=menubar)
 
         self.label_turn = tk.Label(self.root, text="", font=("Arial", 16))
         self.label_turn.pack(pady=20)
         self.selected_cell = None
-        self.update_board()
+
+    def new_game(self):
+        print(cl.create_room(self.socket))
+
+    def join_game(self):
+        cl.connect_to_room(self.socket, 777)
+
+    def show_message(self, msg):
+        print(msg)
+
+    def set_game(self, game):
+        self.game = game
 
     def run(self):
         self.root.mainloop()
@@ -44,7 +68,9 @@ class ChessGUI:
             to_x, to_y = col, row
 
             try:
-                self.game.make_move(from_x, from_y, to_x, to_y, debug_mode=IS_DEBUG)
+                result_move = self.game.make_move(from_x, from_y, to_x, to_y, debug_mode=IS_DEBUG)
+                if result_move:
+                    messagebox.showinfo("ШАХ", "ШАХ!")
             except Exception as error:
                 messagebox.showerror("Ошибка", str(error))
 

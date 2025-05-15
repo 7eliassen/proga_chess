@@ -126,7 +126,7 @@ class Bishop(Figure):
     def __str__(self):
         return "B"
 
-    def if_can_attack(self, x, y):
+    def is_can_attack(self, x, y):
         pos_x, pos_y = self.get_position()
         if abs(x - pos_x) != abs(y - pos_y):
             return False
@@ -173,7 +173,14 @@ class Queen(Figure):
         return "Q"
 
     def is_can_attack(self, x, y):
-        return Rook.can_attack(self, x, y) or Bishop.can_attack(self, x, y)
+        pos_x, pos_y = self.get_position()
+        if pos_x != x and pos_y != y:
+            return False
+        if abs(x - pos_x) != abs(y - pos_y):
+            return False
+        return True
+
+
 
     def move(self, new_pos_x, new_pos_y, piece_2=None):
         pos_x, pos_y = self.get_position()
