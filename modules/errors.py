@@ -28,3 +28,10 @@ class SetIdError(Exception):
     def __init__(self, message="Неверно назначен id комнаты"):
         self.message = message
         super().__init__(self.message)
+
+class TurnError(Exception):
+    """Нарушен порядок ходов"""
+
+    def __init__(self, message="Нарушен порядок ходов"):
+        self.message = message
+        super().__init__(self.message)

@@ -43,7 +43,7 @@ class Figure(ABSFigure, LoggerMixin):
     def __init__(self, pos_x, pos_y, team):
         self.__pos_x = pos_x
         self.__pos_y = pos_y
-        self.__team = team  # 'white' или 'black'
+        self.__team = team
 
     def __str__(self):
         return "T"

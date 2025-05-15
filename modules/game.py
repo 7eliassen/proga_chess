@@ -1,6 +1,6 @@
-from modules.errors import EmptyFieldError, OutOfBoundsError, SetIdError
+from modules.errors import EmptyFieldError, TurnError
 from modules.figures import *
-
+from typing import List, Optional, Union
 
 class Game:
     def __init__(self):
@@ -40,8 +40,10 @@ class Game:
         if status in ['wait', 'both_connected', 'in_process', 'finished']:
             self.__status = status
 
-    def create_board(self):
+    @staticmethod
+    def create_board():
         # Создаем пустую доску 8x8
+        board: List[List[Optional[Union[Rook, Knight, Bishop, Queen, King, Pawn]]]]
         board = [[None] * 8 for _ in range(8)]
 
         # Размещаем черные фигуры (индексация в массиве начинается с 0)
@@ -95,13 +97,19 @@ class Game:
 
         return board
 
-    def make_move(self, pos_x, pos_y, new_pos_x, new_pos_y, team='test'):
+    def get_board(self):
+        return self.__board
+
+    def make_move(self, pos_x, pos_y, new_pos_x, new_pos_y):
         pos_x = int(pos_x)
         pos_y = int(pos_y)
         new_pos_y = int(new_pos_y)
         new_pos_x = int(new_pos_x)
         board = self.__board
         piece = board[pos_y][pos_x]
+        team = piece.get_team()
+        if team != self.turn:
+            raise TurnError
         if piece:
             move_ = piece.move(new_pos_x, new_pos_y)
             if move_:
