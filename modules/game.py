@@ -100,16 +100,26 @@ class Game:
     def get_board(self):
         return self.__board
 
-    def make_move(self, pos_x, pos_y, new_pos_x, new_pos_y):
+    def make_move(self, pos_x, pos_y, new_pos_x, new_pos_y, debug_mode = False):
         pos_x = int(pos_x)
         pos_y = int(pos_y)
         new_pos_y = int(new_pos_y)
         new_pos_x = int(new_pos_x)
         board = self.__board
         piece = board[pos_y][pos_x]
+        field_to = board[new_pos_y][new_pos_x]
         team = piece.get_team()
+
+        if debug_mode:
+            piece.debug_move(new_pos_x, new_pos_y)
+            board[new_pos_y][new_pos_x] = piece
+            board[pos_y][pos_x] = None
+            return True
+
         if team != self.turn:
             raise TurnError
+        if field_to and field_to.get_team() == team:
+            raise InvalidMoveError("Нельзя есть своих")
         if piece:
             move_ = piece.move(new_pos_x, new_pos_y)
             if move_:

@@ -5,6 +5,7 @@ from PIL import Image, ImageTk
 import os
 from typing import List
 
+IS_DEBUG = False
 
 class ChessGUI:
     def __init__(self, figures_path, game):
@@ -36,9 +37,9 @@ class ChessGUI:
             to_x, to_y = col, row
 
             try:
-                self.game.make_move(from_x, from_y, to_x, to_y)
+                self.game.make_move(from_x, from_y, to_x, to_y, debug_mode = IS_DEBUG)
             except Exception as e:
-                print("Ошибка:", e)
+                messagebox.showerror("Ошибка", e)
 
             self.selected = None
             self.update_board()
@@ -82,7 +83,6 @@ class ChessGUI:
                     self.canvas.create_image(x, y, anchor='nw', image=img)
 
     def update_board(self):
-        messagebox.showinfo("Информация", "Ход сделан!")
         self.canvas.delete("all")
         self.draw_board()
         self.draw_pieces()

@@ -51,6 +51,10 @@ class Figure(ABSFigure, LoggerMixin):
     def get_team(self):
         return self.__team
 
+
+    def debug_move(self, pos_x, pos_y):
+        self.move(pos_x, pos_y)
+
     @check_bounds
     def move(self, pos_x, pos_y):
         old_x, old_y = self.get_position()
@@ -71,8 +75,6 @@ class Figure(ABSFigure, LoggerMixin):
 
 
 class Pawn(Figure):
-    # TODO: Пешка может есть по диагонали
-    # TODO: Пешка может превратиться в другую фигуру (класс/цикл)?
 
     def __init__(self, pos_x, pos_y, team):
         super().__init__(pos_x, pos_y, team)
