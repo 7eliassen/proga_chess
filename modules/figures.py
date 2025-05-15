@@ -27,6 +27,9 @@ class Figure(LoggerMixin):
     def __str__(self):
         return "T"
 
+    def can_attack(self, x, y, board):
+        pass
+
     def get_team(self):
         return self.__team
 
@@ -62,6 +65,11 @@ class Pawn(Figure):
     def __str__(self):
         return "P"
 
+    def is_can_attack(self, x, y):
+        pos_x, pos_y = self.get_position()
+        direction = 1 if self.get_team() == 'black' else -1
+        return (abs(x - pos_x) == 1) and (y - pos_y == direction)
+
     def move(self, new_pos_x, new_pos_y, piece_2=None):
         team = self.get_team()
         pos_x, pos_y = self.get_position()
@@ -70,12 +78,16 @@ class Pawn(Figure):
         if team == 'black':
             if dx == 0 and dy == 1 and not piece_2:
                 return super().move(new_pos_x, new_pos_y)
+            elif dx == 0 and dy == 2 and not piece_2 and pos_y == 1:
+                return super().move(new_pos_x, new_pos_y)
             elif piece_2 and dy == 1 and abs(dx) == 1 \
                     and piece_2.get_team() != team:
                 return super().move(new_pos_x, new_pos_y, piece_2)
         elif team == 'white':
             if dx == 0 and dy == -1 and not piece_2:
                 return super().move(new_pos_x, new_pos_y, piece_2)
+            elif dx == 0 and dy == -2 and not piece_2 and pos_y == 6:
+                return super().move(new_pos_x, new_pos_y)
             elif piece_2 and dy == -1 and abs(dx) == 1 \
                     and piece_2.get_team() != team:
                 return super().move(new_pos_x, new_pos_y, piece_2)
@@ -84,13 +96,18 @@ class Pawn(Figure):
 
 
 class Knight(Figure):
-    # TODO: шах и мат
 
     def __init__(self, pos_x, pos_y, team):
         super().__init__(pos_x, pos_y, team)
 
     def __str__(self):
         return "H"
+
+    def is_can_attack(self, x, y):
+        pos_x, pos_y = self.get_position()
+        dx = abs(x - pos_x)
+        dy = abs(y - pos_y)
+        return (dx == 2 and dy == 1) or (dx == 1 and dy == 2)
 
     def move(self, new_pos_x, new_pos_y, piece_2=None):
         pos_x, pos_y = self.get_position()
@@ -109,10 +126,18 @@ class Bishop(Figure):
     def __str__(self):
         return "B"
 
+    def if_can_attack(self, x, y):
+        pos_x, pos_y = self.get_position()
+        if abs(x - pos_x) != abs(y - pos_y):
+            return False
+        return True
+
     def move(self, new_pos_x, new_pos_y, piece_2=None):
         pos_x, pos_y = self.get_position()
         # Слон двигается по диагоналям, то есть разница по обеим осям должна быть одинаковой
-        if abs(new_pos_x - pos_x) == abs(new_pos_y - pos_y):
+        dy = abs(new_pos_y - pos_y)
+        dx = abs(new_pos_x - pos_x)
+        if dy == dx:
             return super().move(new_pos_x, new_pos_y, piece_2)
         else:
             raise InvalidMoveError("Invalid move for Bishop.")
@@ -124,6 +149,12 @@ class Rook(Figure):
 
     def __str__(self):
         return "R"
+
+    def is_can_attack(self, x, y):
+        pos_x, pos_y = self.get_position()
+        if pos_x != x and pos_y != y:
+            return False
+        return True
 
     def move(self, new_pos_x, new_pos_y, piece_2=None):
         pos_x, pos_y = self.get_position()
@@ -141,6 +172,9 @@ class Queen(Figure):
     def __str__(self):
         return "Q"
 
+    def is_can_attack(self, x, y):
+        return Rook.can_attack(self, x, y) or Bishop.can_attack(self, x, y)
+
     def move(self, new_pos_x, new_pos_y, piece_2=None):
         pos_x, pos_y = self.get_position()
         # Ферзь может двигаться как слон и как ладья
@@ -154,6 +188,10 @@ class Queen(Figure):
 class King(Figure):
     def __init__(self, pos_x, pos_y, team):
         super().__init__(pos_x, pos_y, team)
+
+    def is_can_attack(self, x, y):
+        pos_x, pos_y = self.get_position()
+        return abs(x - pos_x) <= 1 and abs(y - pos_y) <= 1
 
     def __str__(self):
         return "K"

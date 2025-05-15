@@ -2,13 +2,15 @@ from modules.errors import EmptyFieldError, TurnError
 from modules.figures import *
 from typing import List, Optional, Union
 
+
 class Game:
     def __init__(self):
-        self.__board = self.create_board()
+        self.board = self.create_board()
         self.__status = 'wait'
         self.id = None
         self.player1 = None
         self.player2 = None
+        self.Kings = List
         self.turn = 'white'
 
     def __str__(self):
@@ -32,7 +34,6 @@ class Game:
         elif number == 2:
             self.player2 = user
 
-
     def get_status(self):
         return self.__status
 
@@ -40,15 +41,17 @@ class Game:
         if status in ['wait', 'both_connected', 'in_process', 'finished']:
             self.__status = status
 
-    @staticmethod
-    def create_board():
+    def create_board(self):
         # Создаем пустую доску 8x8
         board: List[List[Optional[Union[Rook, Knight, Bishop, Queen, King, Pawn]]]]
         board = [[None] * 8 for _ in range(8)]
 
+        self.Kings = [Knight(1, 0, 'black'),
+                 King(4, 7, 'white')]
+
         # Размещаем черные фигуры (индексация в массиве начинается с 0)
         board[0][0] = Rook(0, 0, 'black')
-        board[0][1] = Knight(1, 0, 'black')
+        board[0][1] = self.Kings[0]
         board[0][2] = Bishop(2, 0, 'black')
         board[0][3] = Queen(3, 0, 'black')
         board[0][4] = King(4, 0, 'black')
@@ -69,7 +72,7 @@ class Game:
         board[7][1] = Knight(1, 7, 'white')
         board[7][2] = Bishop(2, 7, 'white')
         board[7][3] = Queen(3, 7, 'white')
-        board[7][4] = King(4, 7, 'white')
+        board[7][4] = self.Kings[1]
         board[7][5] = Bishop(5, 7, 'white')
         board[7][6] = Knight(6, 7, 'white')
         board[7][7] = Rook(7, 7, 'white')
@@ -86,7 +89,7 @@ class Game:
         for row in range(8):
             line = f"{row} |"
             for col in range(8):
-                piece = self.__board[row][col]
+                piece = self.board[row][col]
                 if piece:
                     line += f"{str(piece)}|"
                 else:
@@ -98,14 +101,34 @@ class Game:
         return board
 
     def get_board(self):
-        return self.__board
+        return self.board
 
-    def make_move(self, pos_x, pos_y, new_pos_x, new_pos_y, debug_mode = False):
+    def check_obstacles_lines(self, piece, new_pos_x, new_pos_y):
+        pos_x, pos_y = piece.get_position()
+
+        dx = new_pos_x - pos_x
+        dy = new_pos_y - pos_y
+
+        # Определяем шаг по каждой координате: -1, 0 или 1
+        step_x = (dx // abs(dx)) if dx != 0 else 0
+        step_y = (dy // abs(dy)) if dy != 0 else 0
+
+        x, y = pos_x + step_x, pos_y + step_y
+
+        while (x, y) != (new_pos_x, new_pos_y):
+            if self.board[y][x] is not None:
+                return False  # Есть преграда
+            x += step_x
+            y += step_y
+
+        return True  # Путь свободен
+
+    def make_move(self, pos_x, pos_y, new_pos_x, new_pos_y, debug_mode=False):
         pos_x = int(pos_x)
         pos_y = int(pos_y)
         new_pos_y = int(new_pos_y)
         new_pos_x = int(new_pos_x)
-        board = self.__board
+        board = self.board
         piece = board[pos_y][pos_x]
         field_to = board[new_pos_y][new_pos_x]
         team = piece.get_team()
@@ -120,6 +143,9 @@ class Game:
             raise TurnError
         if field_to and field_to.get_team() == team:
             raise InvalidMoveError("Нельзя есть своих")
+        if str(piece) in ("B", "R", "Q") and \
+                self.check_obstacles_lines(piece, new_pos_x, new_pos_y) is False:
+            raise InvalidMoveError("Преграды на пути")
         if piece:
             victim = board[new_pos_y][new_pos_x]
             move_ = piece.move(new_pos_x, new_pos_y, victim)

@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1cc4e4c0-acd8-43b1-a07e-086fbfcc51a1" name="Changes" comment="Добавил degug mode">
+    <list default="true" id="1cc4e4c0-acd8-43b1-a07e-086fbfcc51a1" name="Changes" comment="Пешки могут есть по диагонали, изменена локига проверки границ">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/GUI/chess_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/GUI/chess_gui.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/figures.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/game.py" afterDir="false" />
     </list>
@@ -36,6 +37,9 @@
     &quot;accountId&quot;: &quot;cc51da76-61d3-4a5b-be4b-bbadcae0bfc5&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/modules/game.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -251,7 +255,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747310630559</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Пешки могут есть по диагонали, изменена локига проверки границ">
+      <option name="closed" value="true" />
+      <created>1747312075465</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1747312075465</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -262,6 +274,7 @@
     <MESSAGE value="21.04" />
     <MESSAGE value="Добавил GUI. Можно перемещать фигуры по доске. MVP" />
     <MESSAGE value="Добавил degug mode" />
-    <option name="LAST_COMMIT_MESSAGE" value="Добавил degug mode" />
+    <MESSAGE value="Пешки могут есть по диагонали, изменена локига проверки границ" />
+    <option name="LAST_COMMIT_MESSAGE" value="Пешки могут есть по диагонали, изменена локига проверки границ" />
   </component>
 </project>
