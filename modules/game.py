@@ -121,7 +121,8 @@ class Game:
         if field_to and field_to.get_team() == team:
             raise InvalidMoveError("Нельзя есть своих")
         if piece:
-            move_ = piece.move(new_pos_x, new_pos_y)
+            victim = board[new_pos_y][new_pos_x]
+            move_ = piece.move(new_pos_x, new_pos_y, victim)
             if move_:
                 board[new_pos_y][new_pos_x] = piece
                 board[pos_y][pos_x] = None
