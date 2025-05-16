@@ -4,16 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1cc4e4c0-acd8-43b1-a07e-086fbfcc51a1" name="Changes" comment="Добавил label хода. добавлены методы is_can_attack">
-      <change afterPath="$PROJECT_DIR$/chess.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/modules/socketclient.py" afterDir="false" />
+    <list default="true" id="1cc4e4c0-acd8-43b1-a07e-086fbfcc51a1" name="Changes" comment="15.05">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/GUI/chess_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/GUI/chess_gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/chess.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/figures.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/game.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chess.py" beforeDir="false" afterPath="$PROJECT_DIR$/chess.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/socketclient.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/socketclient.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,26 +51,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.GUI_client.executor": "Run",
-    "Python.chess.executor": "Run",
-    "Python.chess_gui (1).executor": "Run",
-    "Python.chess_gui.executor": "Run",
-    "Python.mail.executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.server.executor": "Run",
-    "Python.user.executor": "Run",
-    "Python.ьфшд.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.codeium.enabled": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/eliassen/PycharmProjects/proga_chess/client/GUI_client.py",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.GUI_client.executor&quot;: &quot;Run&quot;,
+    &quot;Python.chess.executor&quot;: &quot;Run&quot;,
+    &quot;Python.chess_gui (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.chess_gui.executor&quot;: &quot;Run&quot;,
+    &quot;Python.mail.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.server.executor&quot;: &quot;Run&quot;,
+    &quot;Python.user.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ьфшд.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/eliassen/PycharmProjects/proga_chess/client/GUI_client.py&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\eliassen\PycharmProjects\proga_chess\client" />
@@ -280,7 +274,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747318923175</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="15.05">
+      <option name="closed" value="true" />
+      <created>1747332326705</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1747332326705</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -293,6 +295,7 @@
     <MESSAGE value="Добавил degug mode" />
     <MESSAGE value="Пешки могут есть по диагонали, изменена локига проверки границ" />
     <MESSAGE value="Добавил label хода. добавлены методы is_can_attack" />
-    <option name="LAST_COMMIT_MESSAGE" value="Добавил label хода. добавлены методы is_can_attack" />
+    <MESSAGE value="15.05" />
+    <option name="LAST_COMMIT_MESSAGE" value="15.05" />
   </component>
 </project>

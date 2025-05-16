@@ -1,14 +1,37 @@
 import socket
 import threading
+import json
+
 
 class SocketClient:
-    def __init__(self, gui, host='localhost', port=12345):
+    def __init__(self, gui, queue_, host='localhost', port=12345):
         self.gui = gui
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.connect((host, port))
-        self.running = True
+        self.running = False
+        self.host = host
+        self.port = port
+        self.queue = queue_
 
-        # Запускаем поток для приёма сообщений
+    def connect_to_room(self, room):
+        ...
+
+    def create_room(self, name="TEST"):
+        client = self.sock
+        data = {'type': 'create',
+                'name': name}
+        json_str = json.dumps(data)
+        self.send(json_str)
+
+
+    def try_connect(self):
+        try:
+            self.sock.connect((self.host, self.port))
+            self.running = True
+            return True
+        except:
+            return False
+
+    def start_loop(self):
         threading.Thread(target=self.receive_loop, daemon=True).start()
 
     def receive_loop(self):
@@ -16,7 +39,8 @@ class SocketClient:
             try:
                 message = self.sock.recv(1024).decode('utf-8')
                 if message:
-                    self.gui.show_message(f"Сервер: {message}")
+                    self.queue.put(message)
+                    print(list(self.queue))
             except:
                 break
 
