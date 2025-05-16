@@ -1,19 +1,19 @@
+import queue
 import tkinter as tk
 from tkinter import messagebox
-from modules.socketclient import SocketClient
-import client.client as cl
 from PIL import Image, ImageTk
 import os
+from modules.game import Game
+from .new_game_pop import NewGameWindow
 
-IS_DEBUG = False
+IS_DEBUG = True
 
 
-class ChessGUI:
+class ChessGUI():
     def __init__(self, figures_path):
         self.root = tk.Tk()
         self.game = None
-        self.socket = SocketClient(self)
-        self.root.title("Шахматы с фигурами")
+        self.root.title("Шахматы")
         self.cell_size = 80
         self.canvas = tk.Canvas(self.root, width=8 * self.cell_size, height=8 * self.cell_size)
         self.canvas.pack()
@@ -21,16 +21,18 @@ class ChessGUI:
         self.win_width = self.cell_size * 8
         self.root.geometry(f"{self.win_width}x{self.win_height}")
         self.figures_path = figures_path
-        self.pieces = {}  # Сюда загрузим изображения
-        # self.canvas.bind("<Button-1>", self.on_click)
+        self.pieces = {}
+
         menubar = tk.Menu(self.root)
         game_menu = tk.Menu(menubar, tearoff=0)
-        game_menu.add_command(label="Создать", command=self.new_game)
-        game_menu.add_separator()
-        game_menu.add_command(label="Подключиться", command=self.join_game)
+        game_menu.add_command(label="Начать", command=self.new_game)
+        menubar.add_cascade(label="Игра", menu=game_menu)
+
+        statistic = tk.Menu(menubar, tearoff=0)
+        statistic.add_command(label="Рейтинг", command=self.view_rating)
 
         # Добавляем подменю в главное меню
-        menubar.add_cascade(label="Игра", menu=game_menu)
+        menubar.add_cascade(label="Статистика", menu=statistic)
 
         # Устанавливаем главное меню в окно
         self.root.config(menu=menubar)
@@ -38,18 +40,38 @@ class ChessGUI:
         self.label_turn = tk.Label(self.root, text="", font=("Arial", 16))
         self.label_turn.pack(pady=20)
         self.selected_cell = None
+        if IS_DEBUG:
+            self.start_game()
 
     def new_game(self):
-        print(cl.create_room(self.socket))
+        new_game_win = NewGameWindow(self.root)
+        self.root.wait_window(new_game_win)
+        if new_game_win.result_ready:
+            player1 = new_game_win.player1_name[0:10]
+            player2 = new_game_win.player2_name[0:10]
+            messagebox.showinfo("Игроки выбраны", f"Игрок 1: {player1}\nИгрок 2: {player2}")
+        else:
+            messagebox.showinfo("Отмена", "Игра не была начата")
+            return
+        self.start_game()
 
-    def join_game(self):
-        cl.connect_to_room(self.socket, 777)
 
-    def show_message(self, msg):
-        print(msg)
 
-    def set_game(self, game):
-        self.game = game
+
+
+
+    def view_rating(self):
+        ...
+
+    def start_game(self, player1="TEST1", player2="TEST2"):
+        new_game = Game()
+        new_game.set_player(1, player1)
+        new_game.set_player(2, player2)
+
+        self.game = new_game
+
+        self.canvas.bind("<Button-1>", self.on_click)
+        self.update_board()
 
     def run(self):
         self.root.mainloop()
@@ -68,9 +90,11 @@ class ChessGUI:
             to_x, to_y = col, row
 
             try:
-                result_move = self.game.make_move(from_x, from_y, to_x, to_y, debug_mode=IS_DEBUG)
-                if result_move:
-                    messagebox.showinfo("ШАХ", "ШАХ!")
+                result = self.game.make_move(from_x, from_y, to_x, to_y, debug_mode=IS_DEBUG)
+                if result == 'checkmate':
+                    messagebox.showinfo("МАТ", "МАТ")
+                elif result == 'check':
+                    messagebox.showinfo("ШАХ", "ШАХ")
             except Exception as error:
                 messagebox.showerror("Ошибка", str(error))
 

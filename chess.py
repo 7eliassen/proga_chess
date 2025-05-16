@@ -1,10 +1,6 @@
 import os
-import threading
-import tkinter as tk
-from client.gui.chess_gui import ChessGUI
+from gui.chess_gui import ChessGUI
 from modules.game import Game
-from client import *
-from modules.socketclient import SocketClient
 
 
 

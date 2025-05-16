@@ -11,7 +11,7 @@ class Game:
         self.player1 = None
         self.player2 = None
         self.turn = 'white'
-        self.is_check = False
+
 
     def __str__(self):
         return f'Game({self.id}) is {self.get_status()} P1:{self.player1} | P2:{self.player2}'
@@ -123,19 +123,38 @@ class Game:
 
         return True  # Путь свободен
 
-    # def is_in_check(self):
-    #     if self.turn == 'white':
-    #         king_x, king_y = self.Kings[0].get_position()
-    #     else:
-    #         king_x, king_y = self.Kings[1].get_position()
-    #     for y in range(8):
-    #         for x in range(8):
-    #             piece = self.board[y][x]
-    #             if piece and piece.get_team() == self.turn:
-    #                 if piece.is_can_attack(king_x, king_y):
-    #                     self.is_check = True
-    #                     return True
+    def is_in_check(self):
+        # Найдем короля текущего игрока
+        king = None
+        for k in self.Kings:
+            if k.get_team() == self.turn:
+                king = k
+                break
 
+        king_x, king_y = king.get_position()
+
+        # Проверяем все фигуры противника
+        for row in self.board:
+            for piece in row:
+                if piece is not None and piece.get_team() != self.turn:
+                    # Проверяем, может ли фигура атаковать позицию короля
+                    if piece.is_can_attack(king_x, king_y):
+                        # Дополнительно можно проверить, что путь к королю свободен (для фигур, которые двигаются по линиям)
+                        if isinstance(piece, (Bishop, Rook, Queen)):
+                            if self.check_obstacles_lines(piece, king_x, king_y):
+                                return True
+                        else:
+                            # Пешка, Конь, Король не требуют проверки пути
+
+                            return True
+
+        return False
+
+
+    def is_checkmate(self):
+        """СУТЬ: перебираем все возможные перемещения всех фигур. Если при
+        каком-либо из вариантов не будет шаха, то мат отменяется. Иначе мат.
+        """
 
 
     def make_move(self, pos_x, pos_y, new_pos_x, new_pos_y, debug_mode=False):
@@ -147,12 +166,6 @@ class Game:
         piece = board[pos_y][pos_x]
         field_to = board[new_pos_y][new_pos_x]
         team = piece.get_team()
-
-        if debug_mode:
-            piece.debug_move(new_pos_x, new_pos_y)
-            board[new_pos_y][new_pos_x] = piece
-            board[pos_y][pos_x] = None
-            return True
 
         if team != self.turn:
             raise TurnError
@@ -167,13 +180,16 @@ class Game:
             if move_:
                 board[new_pos_y][new_pos_x] = piece
                 board[pos_y][pos_x] = None
-                if move_:
-                    self.is_in_check()
                 if self.turn == 'white':
                     self.turn = 'black'
                 elif self.turn == 'black':
                     self.turn = 'white'
-                return self.is_in_check()
+                if self.is_in_check():
+                    return 'check'
+                else:
+                    return None
+
+
             else:
                 raise InvalidMoveError
         else:

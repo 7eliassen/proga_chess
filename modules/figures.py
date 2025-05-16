@@ -174,13 +174,18 @@ class Queen(Figure):
 
     def is_can_attack(self, x, y):
         pos_x, pos_y = self.get_position()
-        if pos_x != x and pos_y != y:
-            return False
-        if abs(x - pos_x) != abs(y - pos_y):
-            return False
-        return True
 
+        def bishop():
+            if abs(x - pos_x) != abs(y - pos_y):
+                return False
+            return True
 
+        def rook():
+            if pos_x != x and pos_y != y:
+                return False
+            return True
+
+        return bishop() or rook()
 
     def move(self, new_pos_x, new_pos_y, piece_2=None):
         pos_x, pos_y = self.get_position()
