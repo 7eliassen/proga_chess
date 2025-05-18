@@ -1,6 +1,6 @@
 from modules.errors import EmptyFieldError, TurnError
 from modules.figures import *
-from typing import List, Optional, Union, Literal
+from typing import List, Optional, Union
 
 
 class Game:
@@ -11,7 +11,7 @@ class Game:
         self.player1 = None
         self.player2 = None
         self.turn = 'white'
-
+        self.Kings: List[King] = []
 
     def __str__(self):
         return f'Game({self.id}) is {self.get_status()} P1:{self.player1} | P2:{self.player2}'
@@ -150,12 +150,30 @@ class Game:
 
         return False
 
-
     def is_checkmate(self):
-        """СУТЬ: перебираем все возможные перемещения всех фигур. Если при
-        каком-либо из вариантов не будет шаха, то мат отменяется. Иначе мат.
-        """
+        ...
 
+    def get_all_possibles_moves(self, piece: Figure):
+        team = piece.get_team()
+        possibles_moves = []
+        for y in range(8):
+            for x in range(8):
+                field_to = self.board[y][x]
+                if field_to and field_to.get_team() == team:
+                    continue
+
+                if str(piece) == "P":
+                    if field_to and field_to.get_team() != team:
+                        if piece.is_can_attack(x, y):
+                            possibles_moves.append((x, y))
+                        else:
+                            if piece.move(x, y):
+                                possibles_moves.append((x, y))
+
+                else:
+                    if piece.move(x, y) or piece.is_can_attack(x, y):
+                        possibles_moves.append((x, y))
+        print(possibles_moves)
 
     def make_move(self, pos_x, pos_y, new_pos_x, new_pos_y, debug_mode=False):
         pos_x = int(pos_x)
@@ -166,6 +184,8 @@ class Game:
         piece = board[pos_y][pos_x]
         field_to = board[new_pos_y][new_pos_x]
         team = piece.get_team()
+
+        print(self.get_all_possibles_moves(piece))
 
         if team != self.turn:
             raise TurnError
@@ -180,10 +200,13 @@ class Game:
             if move_:
                 board[new_pos_y][new_pos_x] = piece
                 board[pos_y][pos_x] = None
+                piece.set_position(new_pos_x, new_pos_y)
                 if self.turn == 'white':
                     self.turn = 'black'
                 elif self.turn == 'black':
                     self.turn = 'white'
+                if self.is_checkmate():
+                    return 'checkmate'
                 if self.is_in_check():
                     return 'check'
                 else:

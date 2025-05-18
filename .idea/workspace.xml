@@ -4,19 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1cc4e4c0-acd8-43b1-a07e-086fbfcc51a1" name="Changes" comment="Добавил label хода. добавлены методы is_can_attack">
-      <change afterPath="$PROJECT_DIR$/gui/new_game_pop.py" afterDir="false" />
+    <list default="true" id="1cc4e4c0-acd8-43b1-a07e-086fbfcc51a1" name="Changes" comment="16.05">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chess.py" beforeDir="false" afterPath="$PROJECT_DIR$/chess.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/GUI/chess_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/chess_gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/proto_client.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/figures.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/game.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/logic.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/socketclient.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/user.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,10 +24,11 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="c39f1fecff98aa02379da2a12c2fb4ca74aec669" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="MIXED" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -243,10 +235,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.new_game (1)" />
-        <item itemvalue="Python.new_game" />
         <item itemvalue="Python.chess_gui (1)" />
         <item itemvalue="Python.chess_gui" />
+        <item itemvalue="Python.new_game (1)" />
+        <item itemvalue="Python.new_game" />
+        <item itemvalue="Python.new_game (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -338,8 +331,27 @@
       <option name="project" value="LOCAL" />
       <updated>1747318923175</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="16.05">
+      <option name="closed" value="true" />
+      <created>1747424322398</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1747424322398</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="git init" />
@@ -351,6 +363,7 @@
     <MESSAGE value="Добавил degug mode" />
     <MESSAGE value="Пешки могут есть по диагонали, изменена локига проверки границ" />
     <MESSAGE value="Добавил label хода. добавлены методы is_can_attack" />
-    <option name="LAST_COMMIT_MESSAGE" value="Добавил label хода. добавлены методы is_can_attack" />
+    <MESSAGE value="16.05" />
+    <option name="LAST_COMMIT_MESSAGE" value="16.05" />
   </component>
 </project>

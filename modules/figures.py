@@ -14,7 +14,8 @@ King – Король
 # Класс-миксин для логирования
 class LoggerMixin:
     def log_move(self, from_pos, to_pos, team):
-        print(f"[LOG] {self.__class__.__name__} from {team} moved from {from_pos} to {to_pos}")
+        ...
+        # print(f"[LOG] {self.__class__.__name__} from {team} moved from {from_pos} to {to_pos}")
 
 
 # Родительский класс фигуры
@@ -27,7 +28,10 @@ class Figure(LoggerMixin):
     def __str__(self):
         return "T"
 
-    def can_attack(self, x, y, board):
+    def possibles_moves(self):
+        pass
+
+    def is_can_attack(self, x, y):
         pass
 
     def get_team(self):
@@ -41,8 +45,8 @@ class Figure(LoggerMixin):
             raise OutOfBoundsError("Figure beyond the borders")
 
         old_x, old_y = self.get_position()
-        self.__pos_y = pos_y
-        self.__pos_x = pos_x
+        # self.__pos_y = pos_y
+        # self.__pos_x = pos_x
         self.log_move(f"X:{old_x} Y:{old_y}", f"X:{pos_x} Y:{pos_y} and eat {piece_2}", self.get_team())
         return True
 
@@ -54,7 +58,7 @@ class Figure(LoggerMixin):
         old_x, old_y = self.get_position()
         self.__pos_x = pos_x
         self.__pos_y = pos_y
-        self.log_move(f"X:{old_x} Y:{old_y}", f"X:{pos_x} Y:{pos_y}", self.get_team())
+        self.log_move(f"X:{old_x} Y:{old_y}", f"X:{pos_x} Y:{pos_y} [SET POSITION]", self.get_team())
 
 
 class Pawn(Figure):
@@ -70,26 +74,32 @@ class Pawn(Figure):
         direction = 1 if self.get_team() == 'black' else -1
         return (abs(x - pos_x) == 1) and (y - pos_y == direction)
 
-    def move(self, new_pos_x, new_pos_y, piece_2=None):
+    def move(self, new_pos_x, new_pos_y, piece_2=None, just_check=False):
         team = self.get_team()
         pos_x, pos_y = self.get_position()
         dx = new_pos_x - pos_x
         dy = new_pos_y - pos_y
         if team == 'black':
             if dx == 0 and dy == 1 and not piece_2:
+                if just_check: return True
                 return super().move(new_pos_x, new_pos_y)
             elif dx == 0 and dy == 2 and not piece_2 and pos_y == 1:
+                if just_check: return True
                 return super().move(new_pos_x, new_pos_y)
             elif piece_2 and dy == 1 and abs(dx) == 1 \
                     and piece_2.get_team() != team:
+                if just_check: return True
                 return super().move(new_pos_x, new_pos_y, piece_2)
         elif team == 'white':
             if dx == 0 and dy == -1 and not piece_2:
+                if just_check: return True
                 return super().move(new_pos_x, new_pos_y, piece_2)
             elif dx == 0 and dy == -2 and not piece_2 and pos_y == 6:
+                if just_check: return True
                 return super().move(new_pos_x, new_pos_y)
             elif piece_2 and dy == -1 and abs(dx) == 1 \
                     and piece_2.get_team() != team:
+                if just_check: return True
                 return super().move(new_pos_x, new_pos_y, piece_2)
         else:
             raise InvalidMoveError('Invalid move for Pawn')
@@ -109,11 +119,12 @@ class Knight(Figure):
         dy = abs(y - pos_y)
         return (dx == 2 and dy == 1) or (dx == 1 and dy == 2)
 
-    def move(self, new_pos_x, new_pos_y, piece_2=None):
+    def move(self, new_pos_x, new_pos_y, piece_2=None, just_check=False):
         pos_x, pos_y = self.get_position()
         # Проверка на "букву Г"
         if (abs(new_pos_x - pos_x) == 2 and abs(new_pos_y - pos_y) == 1) or \
                 (abs(new_pos_x - pos_x) == 1 and abs(new_pos_y - pos_y) == 2):
+            if just_check: return True
             return super().move(new_pos_x, new_pos_y, piece_2)
         else:
             raise InvalidMoveError("Invalid move for Knight.")
@@ -132,12 +143,13 @@ class Bishop(Figure):
             return False
         return True
 
-    def move(self, new_pos_x, new_pos_y, piece_2=None):
+    def move(self, new_pos_x, new_pos_y, piece_2=None, just_check=False):
         pos_x, pos_y = self.get_position()
         # Слон двигается по диагоналям, то есть разница по обеим осям должна быть одинаковой
         dy = abs(new_pos_y - pos_y)
         dx = abs(new_pos_x - pos_x)
         if dy == dx:
+            if just_check: return True
             return super().move(new_pos_x, new_pos_y, piece_2)
         else:
             raise InvalidMoveError("Invalid move for Bishop.")
@@ -156,10 +168,11 @@ class Rook(Figure):
             return False
         return True
 
-    def move(self, new_pos_x, new_pos_y, piece_2=None):
+    def move(self, new_pos_x, new_pos_y, piece_2=None, just_check=False):
         pos_x, pos_y = self.get_position()
         # Ладья двигается по прямым линиям: либо по вертикали, либо по горизонтали
         if pos_x == new_pos_x or pos_y == new_pos_y:
+            if just_check: return True
             return super().move(new_pos_x, new_pos_y, piece_2)
         else:
             raise InvalidMoveError("Invalid move for Rook.")
@@ -187,11 +200,12 @@ class Queen(Figure):
 
         return bishop() or rook()
 
-    def move(self, new_pos_x, new_pos_y, piece_2=None):
+    def move(self, new_pos_x, new_pos_y, piece_2=None, just_check=False):
         pos_x, pos_y = self.get_position()
         # Ферзь может двигаться как слон и как ладья
         if abs(new_pos_x - pos_x) == abs(new_pos_y - pos_y) or \
                 pos_x == new_pos_x or pos_y == new_pos_y:
+            if just_check: return True
             return super().move(new_pos_x, new_pos_y, piece_2)
         else:
             raise InvalidMoveError("Invalid move for Queen.")
@@ -208,10 +222,11 @@ class King(Figure):
     def __str__(self):
         return "K"
 
-    def move(self, new_pos_x, new_pos_y, piece_2=None):
+    def move(self, new_pos_x, new_pos_y, piece_2=None, just_check=False):
         pos_x, pos_y = self.get_position()
         # Король может двигаться на одно поле в любом направлении
         if abs(new_pos_x - pos_x) <= 1 and abs(new_pos_y - pos_y) <= 1:
+            if just_check: return True
             return super().move(new_pos_x, new_pos_y, piece_2)
         else:
             raise InvalidMoveError("Invalid move for King.")
