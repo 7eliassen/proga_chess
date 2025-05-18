@@ -11,15 +11,7 @@ King – Король
 """
 
 
-# Класс-миксин для логирования
-class LoggerMixin:
-    def log_move(self, from_pos, to_pos, team):
-        ...
-        # print(f"[LOG] {self.__class__.__name__} from {team} moved from {from_pos} to {to_pos}")
-
-
-# Родительский класс фигуры
-class Figure(LoggerMixin):
+class Figure():
     def __init__(self, pos_x, pos_y, team):
         self.__pos_x = pos_x
         self.__pos_y = pos_y
@@ -31,9 +23,6 @@ class Figure(LoggerMixin):
     def possibles_moves(self):
         pass
 
-    def is_can_attack(self, x, y):
-        pass
-
     def get_team(self):
         return self.__team
 
@@ -43,22 +32,17 @@ class Figure(LoggerMixin):
     def move(self, pos_x, pos_y, piece_2=None):
         if not (0 <= pos_x <= 7 and 0 <= pos_y <= 7):
             raise OutOfBoundsError("Figure beyond the borders")
-
-        old_x, old_y = self.get_position()
-        # self.__pos_y = pos_y
-        # self.__pos_x = pos_x
-        self.log_move(f"X:{old_x} Y:{old_y}", f"X:{pos_x} Y:{pos_y} and eat {piece_2}", self.get_team())
         return True
 
     def get_position(self):
         return [self.__pos_x, self.__pos_y]
 
-    # Метод для отладки, никаких проверок
     def set_position(self, pos_x, pos_y):
-        old_x, old_y = self.get_position()
         self.__pos_x = pos_x
         self.__pos_y = pos_y
-        self.log_move(f"X:{old_x} Y:{old_y}", f"X:{pos_x} Y:{pos_y} [SET POSITION]", self.get_team())
+
+    def is_can_attack(self, x, y):
+        pass
 
 
 class Pawn(Figure):
@@ -113,12 +97,6 @@ class Knight(Figure):
     def __str__(self):
         return "H"
 
-    def is_can_attack(self, x, y):
-        pos_x, pos_y = self.get_position()
-        dx = abs(x - pos_x)
-        dy = abs(y - pos_y)
-        return (dx == 2 and dy == 1) or (dx == 1 and dy == 2)
-
     def move(self, new_pos_x, new_pos_y, piece_2=None, just_check=False):
         pos_x, pos_y = self.get_position()
         # Проверка на "букву Г"
@@ -162,12 +140,6 @@ class Rook(Figure):
     def __str__(self):
         return "R"
 
-    def is_can_attack(self, x, y):
-        pos_x, pos_y = self.get_position()
-        if pos_x != x and pos_y != y:
-            return False
-        return True
-
     def move(self, new_pos_x, new_pos_y, piece_2=None, just_check=False):
         pos_x, pos_y = self.get_position()
         # Ладья двигается по прямым линиям: либо по вертикали, либо по горизонтали
@@ -185,21 +157,6 @@ class Queen(Figure):
     def __str__(self):
         return "Q"
 
-    def is_can_attack(self, x, y):
-        pos_x, pos_y = self.get_position()
-
-        def bishop():
-            if abs(x - pos_x) != abs(y - pos_y):
-                return False
-            return True
-
-        def rook():
-            if pos_x != x and pos_y != y:
-                return False
-            return True
-
-        return bishop() or rook()
-
     def move(self, new_pos_x, new_pos_y, piece_2=None, just_check=False):
         pos_x, pos_y = self.get_position()
         # Ферзь может двигаться как слон и как ладья
@@ -214,10 +171,6 @@ class Queen(Figure):
 class King(Figure):
     def __init__(self, pos_x, pos_y, team):
         super().__init__(pos_x, pos_y, team)
-
-    def is_can_attack(self, x, y):
-        pos_x, pos_y = self.get_position()
-        return abs(x - pos_x) <= 1 and abs(y - pos_y) <= 1
 
     def __str__(self):
         return "K"

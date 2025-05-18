@@ -5,13 +5,13 @@ from typing import List, Optional, Union
 
 class Game:
     def __init__(self):
+        self.Kings = None
         self.board = self.create_board()
         self.__status = 'wait'
         self.id = None
         self.player1 = None
         self.player2 = None
         self.turn = 'white'
-        self.Kings: List[King] = []
 
     def __str__(self):
         return f'Game({self.id}) is {self.get_status()} P1:{self.player1} | P2:{self.player2}'
@@ -138,20 +138,43 @@ class Game:
             for piece in row:
                 if piece is not None and piece.get_team() != self.turn:
                     # Проверяем, может ли фигура атаковать позицию короля
-                    if piece.is_can_attack(king_x, king_y):
-                        # Дополнительно можно проверить, что путь к королю свободен (для фигур, которые двигаются по линиям)
-                        if isinstance(piece, (Bishop, Rook, Queen)):
-                            if self.check_obstacles_lines(piece, king_x, king_y):
+                    try:
+                        if piece.move(king_x, king_y):
+                            # Дополнительно можно проверить, что путь к королю свободен (для фигур, которые двигаются по линиям)
+                            if isinstance(piece, (Bishop, Rook, Queen)):
+                                if self.check_obstacles_lines(piece, king_x, king_y):
+                                    return True
+                            else:
+                                # Пешка, Конь, Король не требуют проверки пути
                                 return True
-                        else:
-                            # Пешка, Конь, Король не требуют проверки пути
-
-                            return True
-
+                    except InvalidMoveError:
+                        continue
         return False
 
     def is_checkmate(self):
-        ...
+        if not self.is_in_check():
+            return False
+
+        for piece in self.get_all_pieces(self.turn):
+            saved_x, saved_y = piece.get_position()
+            possible_moves = self.get_all_possibles_moves(piece)
+
+            for move in possible_moves:
+                new_x, new_y = move
+                saved_piece = self.board[new_y][new_x]
+                self.board[new_y][new_x] = piece
+                self.board[saved_y][saved_x] = None
+                piece.set_position(new_x, new_y)
+                if not self.is_in_check():
+                    print(self.print_board())
+                    piece.set_position(saved_x, saved_y)
+                    self.board[new_y][new_x] = saved_piece
+                    self.board[saved_y][saved_x] = piece
+                    return False
+                piece.set_position(saved_x, saved_y)
+                self.board[new_y][new_x] = saved_piece
+                self.board[saved_y][saved_x] = piece
+        return True
 
     def get_all_possibles_moves(self, piece: Figure):
         team = piece.get_team()
@@ -162,18 +185,35 @@ class Game:
                 if field_to and field_to.get_team() == team:
                     continue
 
-                if str(piece) == "P":
+                if isinstance(piece, Pawn):
                     if field_to and field_to.get_team() != team:
                         if piece.is_can_attack(x, y):
                             possibles_moves.append((x, y))
-                        else:
+                    else:
+                        try:
                             if piece.move(x, y):
                                 possibles_moves.append((x, y))
+                        except InvalidMoveError:
+                            continue
 
                 else:
-                    if piece.move(x, y) or piece.is_can_attack(x, y):
-                        possibles_moves.append((x, y))
-        print(possibles_moves)
+                    try:
+                        if isinstance(piece, (Bishop, Rook, Queen)) and piece.move(x, y) and \
+                                self.check_obstacles_lines(piece, x, y) is False:
+                            continue
+                        if ((field_to and field_to.get_team() != team) or not field_to) and piece.move(x, y):
+                            possibles_moves.append((x, y))
+                    except InvalidMoveError:
+                        continue
+        return possibles_moves
+
+    def get_all_pieces(self, team):
+        pieces = []
+        for y in range(8):
+            for x in range(8):
+                if self.board[y][x] and self.board[y][x].get_team() == team:
+                    pieces.append(self.board[y][x])
+        return pieces
 
     def make_move(self, pos_x, pos_y, new_pos_x, new_pos_y, debug_mode=False):
         pos_x = int(pos_x)
@@ -185,13 +225,11 @@ class Game:
         field_to = board[new_pos_y][new_pos_x]
         team = piece.get_team()
 
-        print(self.get_all_possibles_moves(piece))
-
         if team != self.turn:
             raise TurnError
         if field_to and field_to.get_team() == team:
             raise InvalidMoveError("Нельзя есть своих")
-        if str(piece) in ("B", "R", "Q") and \
+        if isinstance(piece, (Bishop, Rook, Queen)) and \
                 self.check_obstacles_lines(piece, new_pos_x, new_pos_y) is False:
             raise InvalidMoveError("Преграды на пути")
         if piece:
@@ -201,10 +239,15 @@ class Game:
                 board[new_pos_y][new_pos_x] = piece
                 board[pos_y][pos_x] = None
                 piece.set_position(new_pos_x, new_pos_y)
+
+                if isinstance(victim, King):
+                    return 'checkmate'
+
                 if self.turn == 'white':
                     self.turn = 'black'
                 elif self.turn == 'black':
                     self.turn = 'white'
+
                 if self.is_checkmate():
                     return 'checkmate'
                 if self.is_in_check():

@@ -1,12 +1,13 @@
-import queue
 import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import os
 from modules.game import Game
 from .new_game_pop import NewGameWindow
+from .statistics import *
+from modules.database import *
 
-IS_DEBUG = True
+IS_DEBUG = 1
 
 
 class ChessGUI():
@@ -30,18 +31,35 @@ class ChessGUI():
 
         statistic = tk.Menu(menubar, tearoff=0)
         statistic.add_command(label="Рейтинг", command=self.view_rating)
+        statistic.add_command(label="Игры", command=self.view_games)
 
-        # Добавляем подменю в главное меню
         menubar.add_cascade(label="Статистика", menu=statistic)
 
-        # Устанавливаем главное меню в окно
         self.root.config(menu=menubar)
 
         self.label_turn = tk.Label(self.root, text="", font=("Arial", 16))
-        self.label_turn.pack(pady=20)
+        self.label_turn.pack(pady=10)
+
+        self.draw_button = tk.Button(self.root, font=("Arial", 16), text="Ничья", command=self.declare_draw)
+
         self.selected_cell = None
         if IS_DEBUG:
             self.start_game()
+
+    def declare_draw(self):
+        add_game(self.game.player1, self.game.player2, "Ничья")
+        messagebox.showinfo('Ничья', "Объявлена ничья")
+        self.end_game()
+
+    def view_games(self):
+        games = get_all_games()
+        print(games)
+        GamesWindow(self.root, games)
+
+    def view_rating(self):
+        ratings = get_rating()
+        print(ratings)
+        RatingWindow(self.root, ratings)
 
     def new_game(self):
         new_game_win = NewGameWindow(self.root)
@@ -53,15 +71,7 @@ class ChessGUI():
         else:
             messagebox.showinfo("Отмена", "Игра не была начата")
             return
-        self.start_game()
-
-
-
-
-
-
-    def view_rating(self):
-        ...
+        self.start_game(player1, player2)
 
     def start_game(self, player1="TEST1", player2="TEST2"):
         new_game = Game()
@@ -72,6 +82,7 @@ class ChessGUI():
 
         self.canvas.bind("<Button-1>", self.on_click)
         self.update_board()
+        self.draw_button.pack(pady=10)
 
     def run(self):
         self.root.mainloop()
@@ -81,25 +92,40 @@ class ChessGUI():
         row = event.y // self.cell_size
 
         if self.selected_cell is None:
-            # Первая клетка выбрана
             self.selected_cell = (col, row)
             self.update_board()
         else:
-            # Вторая клетка — делаем ход
             from_x, from_y = self.selected_cell
             to_x, to_y = col, row
 
             try:
                 result = self.game.make_move(from_x, from_y, to_x, to_y, debug_mode=IS_DEBUG)
-                if result == 'checkmate':
-                    messagebox.showinfo("МАТ", "МАТ")
-                elif result == 'check':
+                if result == 'check':
                     messagebox.showinfo("ШАХ", "ШАХ")
+                elif result == 'checkmate':
+                    team, nick_mane = ('Белые', self.game.player1) if self.game.turn == 'white' else (
+                    'Черные', self.game.player2)
+                    messagebox.showinfo('МАТ', f'Цвет: {team}\n{nick_mane} победил')
+                    add_game(self.game.player1, self.game.player2, nick_mane)
+                    self.end_game()
+                    return
+                elif result == 'check_move':
+                    messagebox.showinfo('ШАХ', 'Вам нужно избавиться от шаха')
+
+
+
             except Exception as error:
                 messagebox.showerror("Ошибка", str(error))
 
             self.selected_cell = None
             self.update_board()
+
+    def end_game(self):
+        self.game = None
+        self.canvas.delete("all")
+        self.label_turn.config(text="")
+        self.selected_cell = None
+        self.draw_button.pack_forget()
 
     def draw_board(self):
         colors = ["#EEEED2", "#769656"]
