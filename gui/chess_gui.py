@@ -53,12 +53,10 @@ class ChessGUI():
 
     def view_games(self):
         games = get_all_games()
-        print(games)
         GamesWindow(self.root, games)
 
     def view_rating(self):
         ratings = get_rating()
-        print(ratings)
         RatingWindow(self.root, ratings)
 
     def new_game(self):
@@ -103,7 +101,7 @@ class ChessGUI():
                 if result == 'check':
                     messagebox.showinfo("ШАХ", "ШАХ")
                 elif result == 'checkmate':
-                    team, nick_mane = ('Белые', self.game.player1) if self.game.turn == 'white' else (
+                    team, nick_mane = ('Белые', self.game.player1) if self.game.turn == 'black' else (
                     'Черные', self.game.player2)
                     messagebox.showinfo('МАТ', f'Цвет: {team}\n{nick_mane} победил')
                     add_game(self.game.player1, self.game.player2, nick_mane)

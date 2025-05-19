@@ -42,14 +42,12 @@ class Game:
             self.__status = status
 
     def create_board(self):
-        # Создаем пустую доску 8x8
         board: List[List[Optional[Union[Rook, Knight, Bishop, Queen, King, Pawn]]]]
         board = [[None] * 8 for _ in range(8)]
 
         self.Kings = [King(4, 0, 'black'),
                       King(4, 7, 'white')]
 
-        # Размещаем черные фигуры (индексация в массиве начинается с 0)
         board[0][0] = Rook(0, 0, 'black')
         board[0][1] = Knight(1, 0, 'black')
         board[0][2] = Bishop(2, 0, 'black')
@@ -59,15 +57,12 @@ class Game:
         board[0][6] = Knight(6, 0, 'black')
         board[0][7] = Rook(7, 0, 'black')
 
-        # Размещаем черные пешки
         for col in range(8):
             board[1][col] = Pawn(col, 1, 'black')
 
-        # Размещаем белые пешки
         for col in range(8):
             board[6][col] = Pawn(col, 6, 'white')
 
-        # Размещаем белые фигуры
         board[7][0] = Rook(0, 7, 'white')
         board[7][1] = Knight(1, 7, 'white')
         board[7][2] = Bishop(2, 7, 'white')
@@ -80,9 +75,6 @@ class Game:
         return board
 
     def print_board(self):
-        """
-        Отображает текущее состояние доски.
-        """
         board = "\n"
         board += "   0 1 2 3 4 5 6 7\n"
         board += "  ________________\n"
@@ -109,7 +101,6 @@ class Game:
         dx = new_pos_x - pos_x
         dy = new_pos_y - pos_y
 
-        # Определяем шаг по каждой координате: -1, 0 или 1
         step_x = (dx // abs(dx)) if dx != 0 else 0
         step_y = (dy // abs(dy)) if dy != 0 else 0
 
@@ -117,14 +108,13 @@ class Game:
 
         while (x, y) != (new_pos_x, new_pos_y):
             if self.board[y][x] is not None:
-                return False  # Есть преграда
+                return False
             x += step_x
             y += step_y
 
-        return True  # Путь свободен
+        return True
 
     def is_in_check(self):
-        # Найдем короля текущего игрока
         king = None
         for k in self.Kings:
             if k.get_team() == self.turn:
@@ -133,19 +123,15 @@ class Game:
 
         king_x, king_y = king.get_position()
 
-        # Проверяем все фигуры противника
         for row in self.board:
             for piece in row:
                 if piece is not None and piece.get_team() != self.turn:
-                    # Проверяем, может ли фигура атаковать позицию короля
                     try:
                         if piece.move(king_x, king_y):
-                            # Дополнительно можно проверить, что путь к королю свободен (для фигур, которые двигаются по линиям)
                             if isinstance(piece, (Bishop, Rook, Queen)):
                                 if self.check_obstacles_lines(piece, king_x, king_y):
                                     return True
                             else:
-                                # Пешка, Конь, Король не требуют проверки пути
                                 return True
                     except InvalidMoveError:
                         continue
@@ -215,7 +201,7 @@ class Game:
                     pieces.append(self.board[y][x])
         return pieces
 
-    def make_move(self, pos_x, pos_y, new_pos_x, new_pos_y, debug_mode=False):
+    def make_move(self, pos_x, pos_y, new_pos_x, new_pos_y):
         pos_x = int(pos_x)
         pos_y = int(pos_y)
         new_pos_y = int(new_pos_y)
