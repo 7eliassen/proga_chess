@@ -102,7 +102,7 @@ class ChessGUI():
                     messagebox.showinfo("ШАХ", "ШАХ")
                 elif result == 'checkmate':
                     team, nick_mane = ('Белые', self.game.player1) if self.game.turn == 'black' else (
-                    'Черные', self.game.player2)
+                        'Черные', self.game.player2)
                     messagebox.showinfo('МАТ', f'Цвет: {team}\n{nick_mane} победил')
                     add_game(self.game.player1, self.game.player2, nick_mane)
                     self.end_game()

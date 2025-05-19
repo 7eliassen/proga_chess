@@ -201,7 +201,7 @@ class Game:
                     pieces.append(self.board[y][x])
         return pieces
 
-    def make_move(self, pos_x, pos_y, new_pos_x, new_pos_y):
+    def make_move(self, pos_x, pos_y, new_pos_x, new_pos_y, debug_mode=False):
         pos_x = int(pos_x)
         pos_y = int(pos_y)
         new_pos_y = int(new_pos_y)

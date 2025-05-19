@@ -1,5 +1,6 @@
 """В этом файле содержатся классы шахматных фигур"""
 from modules.errors import InvalidMoveError, OutOfBoundsError
+import abc
 
 """
 Pawn – Пешка
@@ -11,7 +12,7 @@ King – Король
 """
 
 
-class Figure():
+class Figure(abc.ABC):
     def __init__(self, pos_x, pos_y, team):
         self.__pos_x = pos_x
         self.__pos_y = pos_y
