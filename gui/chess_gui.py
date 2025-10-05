@@ -7,7 +7,7 @@ from .new_game_pop import NewGameWindow
 from .statistics import *
 from modules.database import *
 
-IS_DEBUG = 1
+IS_DEBUG = 0
 
 
 class ChessGUI():

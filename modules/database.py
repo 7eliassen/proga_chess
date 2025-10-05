@@ -52,3 +52,5 @@ def get_rating():
     conn.close()
 
     return rows
+
+create_database()
