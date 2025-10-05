@@ -3,6 +3,7 @@
 This project is a simple chess game implemented in Python. The game is built using the Tkinter library for the graphical user interface and use my own chess engine.
 
 ![chess game](https://raw.githubusercontent.com/7eliassen/proga_chess/refs/heads/offline/docs/screenshot.png)
+
 *Game window*
 
 ## Instalation
