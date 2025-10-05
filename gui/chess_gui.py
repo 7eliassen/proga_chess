@@ -4,8 +4,6 @@ from PIL import Image, ImageTk
 import os
 from modules.game import Game
 from .new_game_pop import NewGameWindow
-from .statistics import *
-from modules.database import *
 
 IS_DEBUG = 0
 
@@ -29,11 +27,7 @@ class ChessGUI():
         game_menu.add_command(label="Начать", command=self.new_game)
         menubar.add_cascade(label="Игра", menu=game_menu)
 
-        statistic = tk.Menu(menubar, tearoff=0)
-        statistic.add_command(label="Рейтинг", command=self.view_rating)
-        statistic.add_command(label="Игры", command=self.view_games)
 
-        menubar.add_cascade(label="Статистика", menu=statistic)
 
         self.root.config(menu=menubar)
 
